@@ -14,11 +14,27 @@ pub struct EventMessage<'a> {
 }
 
 #[derive(Debug)]
+pub struct OtherError {}
+
+impl std::fmt::Display for OtherError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "SuperErrorSideKick is here!")
+    }
+}
+
+impl std::error::Error for OtherError {
+    fn description(&self) -> &str {
+        "I'm SuperError side kick"
+    }
+}
+
+#[derive(Debug)]
 pub enum Error {
     Io(std::io::Error),
     Rocks(rocksdb::Error),
     Serde(serde_json::error::Error),
     Utf8(std::str::Utf8Error),
+    Other(OtherError),
 }
 
 impl From<std::io::Error> for Error {
@@ -45,6 +61,12 @@ impl From<std::str::Utf8Error> for Error {
     }
 }
 
+impl From<OtherError> for Error {
+    fn from(err: OtherError) -> Error {
+        Error::Other(err)
+    }
+}
+
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match *self {
@@ -52,6 +74,7 @@ impl std::fmt::Display for Error {
             Error::Rocks(ref err) => write!(f, "RocksDB error: {}", err),
             Error::Serde(ref err) => write!(f, "Serde error: {}", err),
             Error::Utf8(ref err) => write!(f, "Utf8 error: {}", err),
+            Error::Other(ref err) => write!(f, "Other error: {}", err),
         }
     }
 }
