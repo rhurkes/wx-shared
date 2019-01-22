@@ -14,7 +14,15 @@ pub struct EventMessage<'a> {
 }
 
 #[derive(Debug)]
-pub struct OtherError {}
+pub struct OtherError {
+    pub message: String
+}
+
+impl OtherError {
+    pub fn new(msg: &str) -> OtherError {
+        OtherError{message: msg.to_string()}
+    }
+}
 
 impl std::fmt::Display for OtherError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
