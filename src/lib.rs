@@ -32,7 +32,7 @@ impl std::fmt::Display for OtherError {
 
 impl std::error::Error for OtherError {
     fn description(&self) -> &str {
-        "I'm SuperError side kick"  // TODO
+        self.message.as_str()
     }
 }
 
@@ -42,7 +42,6 @@ pub enum Error {
     Rocks(rocksdb::Error),
     Serde(serde_json::error::Error),
     Utf8(std::str::Utf8Error),
-    OptionError(std::option::NoneError),
     Other(OtherError),
 }
 
@@ -67,12 +66,6 @@ impl From<serde_json::error::Error> for Error {
 impl From<std::str::Utf8Error> for Error {
     fn from(err: std::str::Utf8Error) -> Error {
         Error::Utf8(err)
-    }
-}
-
-impl From<std::option::NoneError> for Error {
-    fn from(err: std::optiontr::NoneError) -> Error {
-        Error::OptionError(err)
     }
 }
 
