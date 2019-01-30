@@ -26,7 +26,7 @@ impl OtherError {
 
 impl std::fmt::Display for OtherError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "SuperErrorSideKick is here!")    // TODO
+        write!(f, "Other error: {}", self.message)
     }
 }
 
