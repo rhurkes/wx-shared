@@ -14,11 +14,13 @@ pub mod util;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Event {
-    pub ingest_ts: u64,
-    pub event_ts: u64,
-    pub source: String,
-    pub expires_ts: u64,
     pub data: String,
+    pub event_ts: u64,
+    pub expires_ts: u64,
+    pub ingest_ts: u64,
+    pub loc: (f32, f32),
+    pub poly: Vec<(f32, f32)>,
+    pub source: String,
 }
 
 #[derive(Debug)]
