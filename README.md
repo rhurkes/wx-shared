@@ -1,2 +1,2 @@
 # wx_shared
-Shared models and utilities for Rust-based apps working with weather data
+Shared structs and utilities for Rust-based apps working with weather data
