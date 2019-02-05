@@ -21,6 +21,7 @@ pub struct Event {
     pub loc: (f32, f32),
     pub poly: Vec<(f32, f32)>,
     pub source: String,
+    pub wfo: String,
 }
 
 #[derive(Debug)]
