@@ -16,12 +16,12 @@ pub mod util;
 pub struct Event {
     pub data: String,
     pub event_ts: u64,
-    pub expires_ts: u64,
+    pub expires_ts: Option<u64>,
     pub ingest_ts: u64,
-    pub loc: (f32, f32),
-    pub poly: Vec<(f32, f32)>,
-    pub source: String,
-    pub wfo: String,
+    pub loc: Option<(f32, f32)>,
+    pub poly: Option<Vec<(f32, f32)>>,
+    pub src: String,
+    pub wfo: Option<String>,
 }
 
 #[derive(Debug)]
@@ -151,6 +151,16 @@ pub enum StoreCommand {
 }
 
 impl StoreCommand {
+    pub fn from(value: u8) -> Option<StoreCommand> {
+        match value {
+            0 => Some(StoreCommand::Put),
+            1 => Some(StoreCommand::Get),
+            2 => Some(StoreCommand::PutEvent),
+            3 => Some(StoreCommand::GetEvents),
+            _ => None,
+        }
+    }
+
     fn value(&self) -> u8 {
         match *self {
             StoreCommand::Put => 0,
@@ -167,7 +177,7 @@ pub enum StoreStatus {
 }
 
 impl StoreStatus {
-    fn from(value: u8) -> Option<StoreStatus> {
+    pub fn from(value: u8) -> Option<StoreStatus> {
         match value {
             1 => Some(StoreStatus::ErrorByte),
             0 => Some(StoreStatus::OkByte),
@@ -175,7 +185,7 @@ impl StoreStatus {
         }
     }
 
-    fn value(&self) -> u8 {
+    pub fn value(&self) -> u8 {
         match *self {
             StoreStatus::OkByte => 0,
             StoreStatus::ErrorByte => 1,
