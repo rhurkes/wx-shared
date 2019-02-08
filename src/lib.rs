@@ -4,12 +4,13 @@ extern crate serde_derive;
 extern crate slog;
 
 use bincode::{deserialize, serialize};
+use self::error::{Error, WxError};
 use serde::Serialize;
 use slog::Drain;
-use std::boxed::Box;
 use std::ops::Deref;
 use zmq::{Context, Message, Socket};
 
+pub mod error;
 pub mod util;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -22,102 +23,6 @@ pub struct Event {
     pub poly: Option<Vec<(f32, f32)>>,
     pub src: String,
     pub wfo: Option<String>,
-}
-
-#[derive(Debug)]
-pub struct WxError {
-    pub message: String
-}
-
-impl WxError {
-    pub fn new(msg: &str) -> WxError {
-        WxError{message: msg.to_string()}
-    }
-}
-
-impl std::fmt::Display for WxError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.message)
-    }
-}
-
-impl std::error::Error for WxError {
-    fn description(&self) -> &str {
-        self.message.as_str()
-    }
-}
-
-#[derive(Debug)]
-pub enum Error {
-    Io(std::io::Error),
-    Rocks(rocksdb::Error),
-    Serde(serde_json::error::Error),
-    Utf8(std::str::Utf8Error),
-    Bincode(bincode::ErrorKind),
-    ZeroMQ(zmq::Error),
-    Wx(WxError),
-}
-
-impl From<std::io::Error> for Error {
-    fn from(err: std::io::Error) -> Error {
-        Error::Io(err)
-    }
-}
-
-impl From<rocksdb::Error> for Error {
-    fn from(err: rocksdb::Error) -> Error {
-        Error::Rocks(err)
-    }
-}
-
-impl From<serde_json::error::Error> for Error {
-    fn from(err: serde_json::error::Error) -> Error {
-        Error::Serde(err)
-    }
-}
-
-impl From<std::str::Utf8Error> for Error {
-    fn from(err: std::str::Utf8Error) -> Error {
-        Error::Utf8(err)
-    }
-}
-
-impl From<WxError> for Error {
-    fn from(err: WxError) -> Error {
-        Error::Wx(err)
-    }
-}
-
-impl From<bincode::ErrorKind> for Error {
-    fn from (err: bincode::ErrorKind) -> Error {
-        Error::Bincode(err)
-    }
-}
-
-impl From<zmq::Error> for Error {
-    fn from (err: zmq::Error) -> Error {
-        Error::ZeroMQ(err)
-    }
-}
-
-impl<T> From<Box<T>> for Error where Error: From<T> {
-    fn from (err: Box<T>) -> Error {
-        Error::from(*err)
-    }
-}
-
-impl std::fmt::Display for Error {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match *self {
-            Error::Io(ref err) => write!(f, "io error: {}", err),
-            Error::Rocks(ref err) => write!(f, "rocksdb error: {}", err),
-            Error::Serde(ref err) => write!(f, "serde error: {}", err),
-            Error::Utf8(ref err) => write!(f, "utf8 error: {}", err),
-            Error::Bincode(ref err) => write!(f, "bincode error: {}", err),
-            Error::ZeroMQ(ref err) => write!(f, "zmq error: {}", err),
-            Error::Wx(ref err) => write!(f, "wx error: {}", err),
-        }
-    }
 }
 
 pub struct Logger {
