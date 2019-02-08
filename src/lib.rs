@@ -157,8 +157,8 @@ impl StoreClient {
         Ok(response)
     }
 
-    pub fn put_event(&self, event: Event) -> Result<u64, Error> {
-        let payload = serialize(&event)?;
+    pub fn put_event(&self, event: &Event) -> Result<u64, Error> {
+        let payload = serialize(event)?;
         let response = self.send_command(StoreCommand::PutEvent, &payload)?;
         let ts: u64 = deserialize(&response)?;
 
