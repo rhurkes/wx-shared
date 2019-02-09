@@ -35,6 +35,7 @@ pub enum Error {
     ParseInt(std::num::ParseIntError),
     ParseFloat(std::num::ParseFloatError),
     Chrono(chrono::format::ParseError),
+    Reqwest(reqwest::Error),
 }
 
 impl From<std::io::Error> for Error {
@@ -97,6 +98,12 @@ impl From<chrono::format::ParseError> for Error {
     }
 }
 
+impl From<reqwest::Error> for Error {
+    fn from (err: reqwest::Error) -> Error {
+        Error::Reqwest(err)
+    }
+}
+
 impl<T> From<Box<T>> for Error where Error: From<T> {
     fn from (err: Box<T>) -> Error {
         Error::from(*err)
@@ -116,6 +123,7 @@ impl std::fmt::Display for Error {
             Error::ParseInt(ref err) => write!(f, "parse int error: {}", err),
             Error::ParseFloat(ref err) => write!(f, "parse float error: {}", err),
             Error::Chrono(ref err) => write!(f, "chrono error: {}", err),
+            Error::Reqwest(ref err) => write!(f, "reqwest error: {}", err),
         }
     }
 }
