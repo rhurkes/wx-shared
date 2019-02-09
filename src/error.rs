@@ -2,12 +2,14 @@ use std::boxed::Box;
 
 #[derive(Debug)]
 pub struct WxError {
-    pub message: String
+    pub message: String,
 }
 
 impl WxError {
     pub fn new(msg: &str) -> WxError {
-        WxError{message: msg.to_string()}
+        WxError {
+            message: msg.to_string(),
+        }
     }
 }
 
@@ -69,43 +71,46 @@ impl From<WxError> for Error {
 }
 
 impl From<bincode::ErrorKind> for Error {
-    fn from (err: bincode::ErrorKind) -> Error {
+    fn from(err: bincode::ErrorKind) -> Error {
         Error::Bincode(err)
     }
 }
 
 impl From<zmq::Error> for Error {
-    fn from (err: zmq::Error) -> Error {
+    fn from(err: zmq::Error) -> Error {
         Error::ZeroMQ(err)
     }
 }
 
 impl From<std::num::ParseIntError> for Error {
-    fn from (err: std::num::ParseIntError) -> Error {
+    fn from(err: std::num::ParseIntError) -> Error {
         Error::ParseInt(err)
     }
 }
 
 impl From<std::num::ParseFloatError> for Error {
-    fn from (err: std::num::ParseFloatError) -> Error {
+    fn from(err: std::num::ParseFloatError) -> Error {
         Error::ParseFloat(err)
     }
 }
 
 impl From<chrono::format::ParseError> for Error {
-    fn from (err: chrono::format::ParseError) -> Error {
+    fn from(err: chrono::format::ParseError) -> Error {
         Error::Chrono(err)
     }
 }
 
 impl From<reqwest::Error> for Error {
-    fn from (err: reqwest::Error) -> Error {
+    fn from(err: reqwest::Error) -> Error {
         Error::Reqwest(err)
     }
 }
 
-impl<T> From<Box<T>> for Error where Error: From<T> {
-    fn from (err: Box<T>) -> Error {
+impl<T> From<Box<T>> for Error
+where
+    Error: From<T>,
+{
+    fn from(err: Box<T>) -> Error {
         Error::from(*err)
     }
 }

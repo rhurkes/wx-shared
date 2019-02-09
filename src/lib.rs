@@ -3,11 +3,9 @@ extern crate serde_derive;
 #[macro_use]
 extern crate slog;
 
-use bincode::{deserialize, serialize};
 use self::error::{Error, WxError};
+use bincode::{deserialize, serialize};
 use serde::Serialize;
-use slog::Drain;
-use std::ops::Deref;
 use zmq::{Context, Message, Socket};
 
 pub mod error;
@@ -19,33 +17,16 @@ pub struct Event {
     pub event_ts: u64,
     pub expires_ts: Option<u64>,
     pub ingest_ts: u64,
-    pub loc: Option<(f32, f32)>,
-    pub poly: Option<Vec<(f32, f32)>>,
+    pub loc: Option<Coordinates>,
+    pub poly: Option<Vec<Coordinates>>,
     pub src: String,
     pub wfo: Option<String>,
 }
 
-pub struct Logger {
-    pub instance: slog::Logger,
-}
-
-impl Logger {
-    pub fn new(app_name: &'static str) -> Logger {
-        let decorator = slog_term::TermDecorator::new().build();
-        let drain = slog_term::FullFormat::new(decorator).build().fuse();
-        let drain = slog_async::Async::new(drain).build().fuse();
-
-        Logger {
-            instance: slog::Logger::root(drain, o!("app" => app_name)),
-        }
-    }
-}
-
-impl Deref for Logger {
-    type Target = slog::Logger;
-    fn deref(&self) -> &Self::Target {
-        &self.instance
-    }
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Coordinates {
+    pub lat: f32,
+    pub lon: f32,
 }
 
 pub enum StoreCommand {
@@ -109,9 +90,7 @@ impl StoreClient {
         let socket = ctx.socket(zmq::REQ).unwrap();
         socket.connect(addr).unwrap();
 
-        StoreClient {
-            socket,
-        }
+        StoreClient { socket }
     }
 
     fn send_command(&self, cmd_type: StoreCommand, payload: &[u8]) -> Result<Vec<u8>, Error> {
@@ -128,16 +107,12 @@ impl StoreClient {
         let status = StoreStatus::from(response[0]);
 
         match status {
-            Some(StoreStatus::OkByte) => {
-                Ok(response[1..].to_vec())
-            }
+            Some(StoreStatus::OkByte) => Ok(response[1..].to_vec()),
             Some(StoreStatus::ErrorByte) => {
                 let error_msg: &str = deserialize(&response[1..])?;
-                return Err(Error::Wx(<WxError>::new(error_msg)));
+                Err(Error::Wx(<WxError>::new(error_msg)))
             }
-            _ => {
-                return Err(Error::Wx(<WxError>::new("unknown response payload")));
-            }
+            _ => Err(Error::Wx(<WxError>::new("unknown response payload"))),
         }
     }
 
@@ -166,17 +141,17 @@ impl StoreClient {
     }
 
     pub fn get_events(&self, ts: u64) -> Result<Vec<Event>, Error> {
-        let payload: Vec<u8> = if ts != 0 {
-            serialize(&ts)?
-        } else {
-            Vec::new()
-        };
+        let payload: Vec<u8> = if ts != 0 { serialize(&ts)? } else { Vec::new() };
         let results = self.send_command(StoreCommand::GetEvents, &payload)?;
         let mut events: Vec<Vec<u8>> = deserialize(&results).unwrap();
-        let events: Vec<Event> = events.iter_mut()
-            .map(|x| deserialize(x).unwrap())
-            .collect();
+        let events: Vec<Event> = events.iter_mut().map(|x| deserialize(x).unwrap()).collect();
 
         Ok(events)
+    }
+}
+
+impl Default for StoreClient {
+    fn default() -> Self {
+        Self::new()
     }
 }
