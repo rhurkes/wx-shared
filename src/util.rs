@@ -2,6 +2,7 @@ use chrono::prelude::*;
 use slog::Drain;
 use std::ops::Deref;
 use std::time::{SystemTime, UNIX_EPOCH};
+use crate::error::Error;
 
 pub struct Logger {
     pub instance: slog::Logger,
@@ -36,7 +37,7 @@ pub fn get_system_millis() -> u64 {
     get_system_micros() / 1000
 }
 
-pub fn ts_to_ticks(input: &str) -> Result<u64, Box<std::error::Error>> {
+pub fn ts_to_ticks(input: &str) -> Result<u64, Error> {
     Ok(Utc
         .datetime_from_str(input, "%Y-%m-%dT%H:%M:%S+00:00")?
         .timestamp() as u64
