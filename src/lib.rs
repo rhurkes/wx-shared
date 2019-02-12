@@ -143,7 +143,11 @@ impl StoreClient {
     }
 
     pub fn get_events(&self, ts: u64) -> Result<Vec<Event>, Error> {
-        let payload: Vec<u8> = if ts != 0 { serialize(&ts)? } else { Vec::new() };
+        let payload: Vec<u8> = if ts != 0 {
+            serialize(&ts.to_string())?
+        } else {
+            Vec::new()
+        };
         let results = self.send_command(StoreCommand::GetEvents, &payload)?;
         let mut events: Vec<Vec<u8>> = deserialize(&results).unwrap();
         let events: Vec<Event> = events.iter_mut().map(|x| deserialize(x).unwrap()).collect();
