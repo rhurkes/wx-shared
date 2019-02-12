@@ -88,6 +88,7 @@ impl StoreClient {
         let ctx = Context::new();
         let addr = "tcp://127.0.0.1:31337";
         let socket = ctx.socket(zmq::REQ).unwrap();
+        socket.set_rcvtimeo(1).unwrap();    // 1ms timeout on recv
         socket.connect(addr).unwrap();
 
         StoreClient { socket }
@@ -133,6 +134,7 @@ impl StoreClient {
     }
 
     pub fn put_event(&self, event: &Event) -> Result<u64, Error> {
+        dbg!(&event);
         let payload = serialize(event)?;
         let response = self.send_command(StoreCommand::PutEvent, &payload)?;
         let ts: u64 = deserialize(&response)?;
