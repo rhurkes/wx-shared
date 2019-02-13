@@ -149,8 +149,9 @@ impl StoreClient {
             Vec::new()
         };
         let results = self.send_command(StoreCommand::GetEvents, &payload)?;
-        let mut events: Vec<Vec<u8>> = deserialize(&results).unwrap();
-        let events: Vec<Event> = events.iter_mut().map(|x| deserialize(x).unwrap()).collect();
+        // let mut events: Vec<Vec<u8>> = deserialize(&results).unwrap();
+        let events: Vec<Event> = deserialize(&results).unwrap();
+        // let events: Vec<Event> = events.iter_mut().map(|x| deserialize(x).unwrap()).collect();
 
         Ok(events)
     }
