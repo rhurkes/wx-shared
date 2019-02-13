@@ -88,7 +88,7 @@ impl StoreClient {
         let ctx = Context::new();
         let addr = "tcp://127.0.0.1:31337";
         let socket = ctx.socket(zmq::REQ).unwrap();
-        socket.set_rcvtimeo(1).unwrap();    // 1ms timeout on recv
+        socket.set_rcvtimeo(1000).unwrap();    // 1s timeout on recv
         socket.connect(addr).unwrap();
 
         StoreClient { socket }
