@@ -1,6 +1,6 @@
 use std::boxed::Box;
 
-#[derive(Debug)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct WxError {
     pub message: String,
 }
