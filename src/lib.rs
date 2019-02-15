@@ -156,6 +156,13 @@ impl StoreClient {
 
         Ok(events)
     }
+
+    pub fn get_all_events(&self) -> Result<Vec<Event>, Error> {
+        let results = self.send_command(StoreCommand::GetAllEvents, &[])?;
+        let events: Vec<Event> = deserialize(&results)?;
+
+        Ok(events)
+    }
 }
 
 impl Default for StoreClient {
