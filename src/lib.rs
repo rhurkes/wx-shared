@@ -14,6 +14,7 @@ pub mod util;
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Event {
     pub data: String,
+    pub desc: String,
     pub event_ts: u64,
     pub expires_ts: Option<u64>,
     pub ingest_ts: u64,
@@ -34,6 +35,7 @@ pub enum StoreCommand {
     Get,
     PutEvent,
     GetEvents,
+    GetAllEvents,
 }
 
 impl StoreCommand {
@@ -43,6 +45,7 @@ impl StoreCommand {
             1 => Some(StoreCommand::Get),
             2 => Some(StoreCommand::PutEvent),
             3 => Some(StoreCommand::GetEvents),
+            4 => Some(StoreCommand::GetAllEvents),
             _ => None,
         }
     }
@@ -53,6 +56,7 @@ impl StoreCommand {
             StoreCommand::Get => 1,
             StoreCommand::PutEvent => 2,
             StoreCommand::GetEvents => 3,
+            StoreCommand::GetAllEvents => 4,
         }
     }
 }
@@ -134,7 +138,6 @@ impl StoreClient {
     }
 
     pub fn put_event(&self, event: &Event) -> Result<u64, Error> {
-        dbg!(&event);
         let payload = serialize(event)?;
         let response = self.send_command(StoreCommand::PutEvent, &payload)?;
         let ts: u64 = deserialize(&response)?;
@@ -149,9 +152,7 @@ impl StoreClient {
             Vec::new()
         };
         let results = self.send_command(StoreCommand::GetEvents, &payload)?;
-        // let mut events: Vec<Vec<u8>> = deserialize(&results).unwrap();
-        let events: Vec<Event> = deserialize(&results).unwrap();
-        // let events: Vec<Event> = events.iter_mut().map(|x| deserialize(x).unwrap()).collect();
+        let events: Vec<Event> = deserialize(&results)?;
 
         Ok(events)
     }

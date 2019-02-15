@@ -3,6 +3,7 @@ use slog::Drain;
 use std::ops::Deref;
 use std::time::{SystemTime, UNIX_EPOCH};
 use crate::error::Error;
+use crate::Event;
 
 pub struct Logger {
     pub instance: slog::Logger,
