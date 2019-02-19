@@ -3,32 +3,15 @@ extern crate serde_derive;
 #[macro_use]
 extern crate slog;
 
+use self::domain::Event;
 use self::error::{Error, WxError};
 use bincode::{deserialize, serialize};
 use serde::Serialize;
 use zmq::{Context, Message, Socket};
 
+pub mod domain;
 pub mod error;
 pub mod util;
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct Event {
-    pub data: String,
-    pub desc: String,
-    pub event_ts: u64,
-    pub expires_ts: Option<u64>,
-    pub ingest_ts: u64,
-    pub loc: Option<Coordinates>,
-    pub poly: Option<Vec<Coordinates>>,
-    pub src: String,
-    pub wfo: Option<String>,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct Coordinates {
-    pub lat: f32,
-    pub lon: f32,
-}
 
 pub enum StoreCommand {
     Put,
@@ -92,7 +75,7 @@ impl StoreClient {
         let ctx = Context::new();
         let addr = "tcp://127.0.0.1:31337";
         let socket = ctx.socket(zmq::REQ).unwrap();
-        socket.set_rcvtimeo(1000).unwrap();    // 1s timeout on recv
+        socket.set_rcvtimeo(1000).unwrap(); // 1s timeout on recv
         socket.connect(addr).unwrap();
 
         StoreClient { socket }

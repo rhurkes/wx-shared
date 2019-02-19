@@ -1,8 +1,8 @@
+use crate::error::Error;
 use chrono::prelude::*;
 use slog::Drain;
 use std::ops::Deref;
 use std::time::{SystemTime, UNIX_EPOCH};
-use crate::error::Error;
 
 pub struct Logger {
     pub instance: slog::Logger,
