@@ -19,7 +19,7 @@ pub struct Event {
     pub text: Option<String>, // Full text for things that do not parse, ie. AFDs
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum EventType {
     SnReport,
     NewSfcoa,
