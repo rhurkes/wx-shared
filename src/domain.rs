@@ -4,19 +4,19 @@ use std::collections::HashMap;
 pub struct Event {
     pub event_ts: u64,
     pub event_type: EventType,
-    pub ingest_ts: u64,
-    pub location: Option<Location>,
-    pub valid_ts: Option<u64>,
     pub expires_ts: Option<u64>,
     pub image_uri: Option<String>,
-    pub report: Option<Report>,
-    pub warning: Option<Warning>,
-    pub watch: Option<Watch>,
-    pub outlook: Option<Outlook>,
+    pub ingest_ts: u64,
+    pub location: Option<Location>,
     pub md: Option<MesoscaleDiscussion>,
-    pub title: String,        // Max 31 chars
+    pub outlook: Option<Outlook>,
+    pub report: Option<Report>,
     pub summary: String,      // 2-3 sentence summary
     pub text: Option<String>, // Full text for things that do not parse, ie. AFDs
+    pub title: String,        // Max 31 chars
+    pub valid_ts: Option<u64>,
+    pub warning: Option<Warning>,
+    pub watch: Option<Watch>,
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -48,8 +48,8 @@ pub struct Coordinates {
 pub enum HazardType {
     Flood,
     Tornado,
+    Funnel,
     WallCloud,
-    RotatingWallCloud,
     Hail,
     Wind,
     WindDamage,
@@ -64,7 +64,6 @@ pub struct Report {
     pub units: Option<Units>,
     pub was_measured: Option<bool>,
     pub report_ts: Option<u64>, // only populated for LSRs
-    pub details: String,        // LSR remarks and SN notes
 }
 
 #[derive(Debug, Deserialize, Serialize)]
