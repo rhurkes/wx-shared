@@ -69,7 +69,7 @@ pub struct Report {
     pub report_ts: Option<u64>, // only populated for LSRs
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum Units {
     Knots,
     Mph,
