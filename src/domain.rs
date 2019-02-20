@@ -47,12 +47,15 @@ pub struct Coordinates {
 #[derive(Debug, Deserialize, Serialize)]
 pub enum HazardType {
     Flood,
+    FlashFlood,
     Tornado,
     Funnel,
     WallCloud,
     Hail,
     Wind,
     WindDamage,
+    FreezingRain,
+    Snow,
     Other { kind: String },
 }
 
