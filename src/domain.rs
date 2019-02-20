@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Serialize)]
 pub struct Event {
     pub event_ts: u64,
     pub event_type: EventType,
@@ -28,7 +28,7 @@ pub enum EventType {
     NwsAfd,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Serialize)]
 pub struct Location {
     pub city: Option<String>,
     pub county: Option<String>,
@@ -38,13 +38,13 @@ pub struct Location {
     pub poly: Option<Vec<Coordinates>>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Serialize)]
 pub struct Coordinates {
     pub lat: f32,
     pub lon: f32,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum HazardType {
     Flood,
     FlashFlood,
@@ -59,7 +59,7 @@ pub enum HazardType {
     Other { kind: String },
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Serialize)]
 pub struct Report {
     pub reporter: String,
     pub hazard: HazardType,
@@ -76,7 +76,7 @@ pub enum Units {
     Inches,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Watch {
     pub is_pds: bool,
     pub id: u16,
@@ -85,21 +85,21 @@ pub struct Watch {
     pub issued_for: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum WatchType {
     Tornado,
     SevereThunderstorm,
     Other { kind: String },
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum WatchStatus {
     Issued,
     Cancelled,
     Unknown,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Warning {
     pub is_pds: bool,
     pub is_tor_emergency: bool, // TOR only
@@ -112,7 +112,7 @@ pub struct Warning {
     pub time: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Serialize)]
 pub struct Outlook {
     pub outlook_type: OutlookType,
     pub valid: OutlookValid,
@@ -122,7 +122,7 @@ pub struct Outlook {
     polys: HashMap<OutlookRisk, Vec<Coordinates>>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum OutlookType {
     Day1,
     Day2,
@@ -130,7 +130,7 @@ pub enum OutlookType {
     Day48,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum OutlookValid {
     Z0600,
     Z1300,
@@ -150,7 +150,7 @@ pub enum OutlookRisk {
     HIGH,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MesoscaleDiscussion {
     pub id: u16,
     pub affected: String,
