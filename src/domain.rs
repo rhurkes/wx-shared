@@ -17,6 +17,7 @@ pub struct Event {
     pub valid_ts: Option<u64>,
     pub warning: Option<Warning>,
     pub watch: Option<Watch>,
+    pub fetch_status: Option<HashMap<WxApp, u16>>,
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -161,4 +162,19 @@ pub struct MesoscaleDiscussion {
     pub summary: String,
     pub discussion: String,
     pub forecaster: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct FetchFailure {
+    pub app: WxApp,
+    pub ingest_ts: u64,
+}
+
+#[derive(Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+pub enum WxApp {
+    SpotterNetworkLoader,
+    NwsApiLoader,
+    SpcSfcoaLoader,
+    FetchFailureLoader,
+    Admin,
 }

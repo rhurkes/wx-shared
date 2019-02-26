@@ -49,6 +49,13 @@ mod tests {
     use super::*;
 
     #[test]
+    fn get_system_micros_should_return_value_in_correct_range() {
+        let result = get_system_micros();
+        assert!(result > 1551209606990457); // ts when test was first written
+        assert!(result < 1900000000000000); // year 2030
+    }
+
+    #[test]
     fn ts_to_ticks_should_return_ticks() {
         let ts = "2018-11-25T22:46:00+00:00";
         let result = ts_to_ticks(&ts);
