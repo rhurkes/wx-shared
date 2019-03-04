@@ -106,7 +106,6 @@ pub struct Warning {
     pub motion_deg: u16, // TOR only
     pub motion_kt: u16,  // TOR only
     pub source: String,
-    pub desc: String,
     pub time: String,
 }
 
