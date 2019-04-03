@@ -20,6 +20,29 @@ pub struct Event {
     pub watch: Option<Watch>,
 }
 
+impl Event {
+    pub fn new(event_ts: u64, event_type: EventType, summary: String, title: String) -> Event {
+        Event {
+            event_ts,
+            event_type,
+            expires_ts: None,
+            fetch_status: None,
+            image_uri: None,
+            ingest_ts: 0,
+            location: None,
+            md: None,
+            outlook: None,
+            report: None,
+            summary,
+            text: None,
+            title,
+            valid_ts: None,
+            warning: None,
+            watch: None,
+        }
+    }
+}
+
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum EventType {
     SnReport,

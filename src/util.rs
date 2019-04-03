@@ -1,4 +1,4 @@
-use crate::error::Error;
+use crate::error::{Error, WxError};
 use chrono::prelude::*;
 use slog::Drain;
 use std::ops::Deref;
@@ -40,8 +40,28 @@ pub fn get_system_millis() -> u64 {
 pub fn ts_to_ticks(input: &str) -> Result<u64, Error> {
     Ok(Utc
         .datetime_from_str(input, "%Y-%m-%dT%H:%M:%S+00:00")?
-        .timestamp() as u64
+        .timestamp_millis() as u64
         * 1000)
+}
+
+pub fn tz_to_offset(input: &str) -> Result<&str, Error> {
+    match input {
+        "HST" => Ok("-1000"),
+        "HDT" => Ok("-0900"),
+        "AKST" => Ok("-0900"),
+        "AKDT" => Ok("-0800"),
+        "PST" => Ok("-0800"),
+        "PDT" => Ok("-0700"),
+        "MST" => Ok("-0700"),
+        "MDT" => Ok("-0600"),
+        "CST" => Ok("-0600"),
+        "CDT" => Ok("-0500"),
+        "EST" => Ok("-0500"),
+        "EDT" => Ok("-0400"),
+        "AST" => Ok("-0400"),
+        "ADT" => Ok("-0300"),
+        _ => Err(Error::Wx(<WxError>::new("unknown timezone")))
+    }
 }
 
 #[cfg(test)]
@@ -57,8 +77,8 @@ mod tests {
 
     #[test]
     fn ts_to_ticks_should_return_ticks() {
-        let ts = "2018-11-25T22:46:00+00:00";
-        let result = ts_to_ticks(&ts);
-        assert!(result.unwrap() == 1543185960000);
+        let ts = "2018-11-25T22:46:23+00:00";
+        let result = ts_to_ticks(&ts).unwrap();
+        assert_eq!(result, 1543185983000000);
     }
 }
