@@ -41,7 +41,7 @@ pub fn ts_to_ticks(input: &str) -> Result<u64, Error> {
     Ok(Utc
         .datetime_from_str(input, "%Y-%m-%dT%H:%M:%S+00:00")?
         .timestamp_millis() as u64
-        * 1000)
+        * 1_000_000)
 }
 
 pub fn tz_to_offset(input: &str) -> Result<&str, Error> {
