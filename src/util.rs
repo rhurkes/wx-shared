@@ -60,7 +60,7 @@ pub fn tz_to_offset(input: &str) -> Result<&str, Error> {
         "EDT" => Ok("-0400"),
         "AST" => Ok("-0400"),
         "ADT" => Ok("-0300"),
-        _ => Err(Error::Wx(<WxError>::new("unknown timezone")))
+        _ => Err(Error::Wx(<WxError>::new("unknown timezone"))),
     }
 }
 

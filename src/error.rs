@@ -28,7 +28,6 @@ impl std::error::Error for WxError {
 #[derive(Debug)]
 pub enum Error {
     Io(std::io::Error),
-    Rocks(rocksdb::Error),
     Serde(serde_json::error::Error),
     Utf8(std::str::Utf8Error),
     Bincode(bincode::ErrorKind),
@@ -43,12 +42,6 @@ pub enum Error {
 impl From<std::io::Error> for Error {
     fn from(err: std::io::Error) -> Error {
         Error::Io(err)
-    }
-}
-
-impl From<rocksdb::Error> for Error {
-    fn from(err: rocksdb::Error) -> Error {
-        Error::Rocks(err)
     }
 }
 
@@ -119,7 +112,6 @@ impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match *self {
             Error::Io(ref err) => write!(f, "io error: {}", err),
-            Error::Rocks(ref err) => write!(f, "rocksdb error: {}", err),
             Error::Serde(ref err) => write!(f, "serde error: {}", err),
             Error::Utf8(ref err) => write!(f, "utf8 error: {}", err),
             Error::Bincode(ref err) => write!(f, "bincode error: {}", err),
