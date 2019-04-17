@@ -4,29 +4,18 @@ use std::collections::HashMap;
 pub struct Event {
     pub event_ts: u64,
     pub event_type: EventType,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub expires_ts: Option<u64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub fetch_status: Option<HashMap<WxApp, u16>>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub image_uri: Option<String>,
     pub ingest_ts: u64,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub location: Option<Location>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub md: Option<MesoscaleDiscussion>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub outlook: Option<Outlook>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub report: Option<Report>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
     pub title: String, // Max 31 chars
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub valid_ts: Option<u64>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub warning: Option<Warning>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub watch: Option<Watch>,
 }
 
