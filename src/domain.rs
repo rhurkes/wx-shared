@@ -19,10 +19,9 @@ pub struct Event {
     pub outlook: Option<Outlook>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub report: Option<Report>,
-    pub summary: String,      // 2-3 sentence summary
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub text: Option<String>, // Full text for things that do not parse, ie. AFDs
-    pub title: String,        // Max 31 chars
+    pub text: Option<String>,
+    pub title: String, // Max 31 chars
     #[serde(skip_serializing_if = "Option::is_none")]
     pub valid_ts: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -32,7 +31,7 @@ pub struct Event {
 }
 
 impl Event {
-    pub fn new(event_ts: u64, event_type: EventType, summary: String, title: String) -> Event {
+    pub fn new(event_ts: u64, event_type: EventType, title: String) -> Event {
         Event {
             event_ts,
             event_type,
@@ -44,7 +43,6 @@ impl Event {
             md: None,
             outlook: None,
             report: None,
-            summary,
             text: None,
             title,
             valid_ts: None,
