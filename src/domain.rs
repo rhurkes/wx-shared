@@ -173,9 +173,9 @@ pub enum OutlookRisk {
 pub struct MesoscaleDiscussion {
     pub id: u16,
     pub affected: String,
-    pub concerning: String,
-    pub summary: String,
-    pub discussion: String,
+    // pub concerning: String,
+    // pub summary: String,
+    // pub discussion: String,
     pub is_watch_likely: bool,
     pub watch_issuance_probability: u16,
     pub wfos: Vec<String>,
