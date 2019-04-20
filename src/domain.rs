@@ -147,8 +147,6 @@ pub struct Outlook {
     pub outlook_type: OutlookType,
     pub valid: OutlookValid,
     max_risk: OutlookRisk,
-    summary: String,
-    forecaster: String,
     polys: Option<HashMap<OutlookRisk, Vec<Coordinates>>>,
 }
 
