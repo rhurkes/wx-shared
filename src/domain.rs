@@ -170,12 +170,19 @@ pub enum OutlookRisk {
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub enum MdConcerning {
+    ExistingTorWatch,
+    ExistingSvrWatch,
+    NewTorWatch,
+    NewSvrWatch,
+    Unknown,
+}
+
+#[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct MesoscaleDiscussion {
     pub id: u16,
     pub affected: String,
-    // pub concerning: String,
-    // pub summary: String,
-    // pub discussion: String,
+    pub concerning: MdConcerning,
     pub is_watch_likely: bool,
     pub watch_issuance_probability: u16,
     pub wfos: Vec<String>,
