@@ -145,8 +145,8 @@ pub struct Warning {
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
 pub struct Outlook {
     pub swo_type: SwoType,
-    max_risk: OutlookRisk,
-    polys: Option<HashMap<OutlookRisk, Vec<Coordinates>>>,
+    pub max_risk: OutlookRisk,
+    pub polys: Option<HashMap<OutlookRisk, Vec<Coordinates>>>,
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
