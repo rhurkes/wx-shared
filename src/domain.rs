@@ -149,7 +149,7 @@ pub struct Outlook {
     max_risk: OutlookRisk,
     summary: String,
     forecaster: String,
-    polys: HashMap<OutlookRisk, Vec<Coordinates>>,
+    polys: Option<HashMap<OutlookRisk, Vec<Coordinates>>>,
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
