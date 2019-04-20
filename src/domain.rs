@@ -144,18 +144,20 @@ pub struct Warning {
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
 pub struct Outlook {
-    pub outlook_type: OutlookType,
+    pub swo_type: SwoType,
     pub valid: OutlookValid,
     max_risk: OutlookRisk,
     polys: Option<HashMap<OutlookRisk, Vec<Coordinates>>>,
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum OutlookType {
+pub enum SwoType {
     Day1,
     Day2,
     Day3,
     Day48,
+    MesoscaleDiscussion,
+    Unknown,
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
