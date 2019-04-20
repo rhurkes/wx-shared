@@ -44,10 +44,14 @@ impl Event {
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum EventType {
     SnReport,
-    NewSfcoa,
-    NwsLsr,
-    NwsTor,
+    SpcSfcoa,
     NwsAfd,
+    NwsLsr,
+    NwsSel,
+    NwsSvr,
+    NwsSvs,
+    NwsSwo,
+    NwsTor,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
