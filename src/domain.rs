@@ -67,19 +67,27 @@ pub struct Coordinates {
     pub lon: f32,
 }
 
+/**
+ * Contains most possible permutations of SN reports and LSRs.
+ */
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub enum HazardType {
-    Flood,
-    FlashFlood,
-    Tornado,
+    Tornado = 0isize,
     Funnel,
     WallCloud,
     Hail,
     Wind,
-    WindDamage,
+    Flood,
+    FlashFlood,
+    Other,
     FreezingRain,
     Snow,
-    Other { kind: String },
+    Downburst,
+    HeavyRain,
+    MarineWind,
+    Lightning,
+    Waterspout,
+    Wildfire
 }
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
