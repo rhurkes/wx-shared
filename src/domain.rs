@@ -135,8 +135,8 @@ pub struct Warning {
     pub is_tor_emergency: Option<bool>, // TOR only
     pub was_observed: Option<bool>,     // TOR only
     pub issued_for: String,
-    pub motion_deg: Option<u16>, // TOR only
-    pub motion_kt: Option<u16>,  // TOR only
+    pub motion_deg: u16,
+    pub motion_kt: u16,
     pub source: String,
     pub time: String,
 }
