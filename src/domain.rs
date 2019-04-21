@@ -120,7 +120,7 @@ pub struct Watch {
 pub enum WatchType {
     Tornado,
     SevereThunderstorm,
-    Other { kind: String },
+    Other,
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
