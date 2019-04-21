@@ -113,7 +113,6 @@ pub struct Watch {
     pub id: u16,
     pub watch_type: WatchType,
     pub status: WatchStatus,
-    pub issued_for: String,
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
