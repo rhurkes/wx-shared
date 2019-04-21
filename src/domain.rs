@@ -132,11 +132,11 @@ pub enum WatchStatus {
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Warning {
     pub is_pds: bool,
-    pub is_tor_emergency: bool, // TOR only
-    pub was_observed: bool,     // TOR only
+    pub is_tor_emergency: Option<bool>, // TOR only
+    pub was_observed: Option<bool>,     // TOR only
     pub issued_for: String,
-    pub motion_deg: u16, // TOR only
-    pub motion_kt: u16,  // TOR only
+    pub motion_deg: Option<u16>, // TOR only
+    pub motion_kt: Option<u16>,  // TOR only
     pub source: String,
     pub time: String,
 }

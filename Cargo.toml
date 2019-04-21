@@ -1,6 +1,6 @@
 [package]
 name = "wx"
-version = "0.1.17"
+version = "0.1.18"
 authors = ["Rob Hurkes <rhurkes@gmail.com>"]
 edition = "2018"
 
