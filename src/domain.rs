@@ -184,7 +184,7 @@ pub struct MesoscaleDiscussion {
     pub affected: String,
     pub concerning: MdConcerning,
     pub is_watch_likely: bool,
-    pub watch_issuance_probability: u16,
+    pub watch_issuance_probability: Option<u16>,
     pub wfos: Vec<String>,
 }
 
