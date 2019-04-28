@@ -65,6 +65,7 @@ pub struct Location {
     pub wfo: Option<String>,
     pub point: Option<Coordinates>,
     pub poly: Option<Vec<Coordinates>>,
+    pub county: Option<String>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
@@ -119,6 +120,7 @@ pub struct Watch {
     pub id: u16,
     pub watch_type: WatchType,
     pub status: WatchStatus,
+    pub issued_for: Option<String>,
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, Serialize)]
