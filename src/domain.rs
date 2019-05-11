@@ -5,15 +5,14 @@ pub struct Event {
     pub event_ts: u64,
     pub event_type: EventType,
     pub expires_ts: Option<u64>,
-    pub fetch_status: Option<HashMap<WxApp, u16>>,
-    pub image_uri: Option<String>,
+    pub ext_uri: Option<String>,
     pub ingest_ts: u64,
     pub location: Option<Location>,
     pub md: Option<MesoscaleDiscussion>,
     pub outlook: Option<Outlook>,
     pub report: Option<Report>,
     pub text: Option<String>,
-    pub title: String, // Max 31 chars
+    pub title: String,
     pub valid_ts: Option<u64>,
     pub warning: Option<Warning>,
     pub watch: Option<Watch>,
@@ -25,7 +24,6 @@ impl Event {
             event_ts,
             event_type,
             expires_ts: None,
-            fetch_status: None,
             image_uri: None,
             ingest_ts: 0,
             location: None,
@@ -194,17 +192,10 @@ pub struct MesoscaleDiscussion {
     pub wfos: Vec<String>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
-pub struct FetchFailure {
-    pub app: WxApp,
-    pub ingest_ts: u64,
-}
-
 #[derive(Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub enum WxApp {
     SpotterNetworkLoader,
     NwsApiLoader,
     SpcSfcoaLoader,
-    FetchFailureLoader,
     Admin,
 }
