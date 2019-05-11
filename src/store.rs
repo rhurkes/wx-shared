@@ -1,8 +1,7 @@
-use crate::domain::{Event, FetchFailure, WxApp};
+use crate::domain::Event;
 use crate::error::{Error, WxError};
 use bincode::{deserialize, serialize};
 use serde::Serialize;
-use std::collections::HashMap;
 use zmq::{Context, Message, Socket};
 
 pub enum Command {
@@ -11,8 +10,6 @@ pub enum Command {
     PutEvent,
     GetEvents,
     GetAllEvents,
-    PutFetchFailure,
-    GetFetchFailures,
 }
 
 impl Command {
@@ -23,8 +20,6 @@ impl Command {
             2 => Some(Command::PutEvent),
             3 => Some(Command::GetEvents),
             4 => Some(Command::GetAllEvents),
-            5 => Some(Command::PutFetchFailure),
-            6 => Some(Command::GetFetchFailures),
             _ => None,
         }
     }
@@ -36,8 +31,6 @@ impl Command {
             Command::PutEvent => 2,
             Command::GetEvents => 3,
             Command::GetAllEvents => 4,
-            Command::PutFetchFailure => 5,
-            Command::GetFetchFailures => 6,
         }
     }
 }
@@ -143,26 +136,6 @@ impl Client {
         let events: Vec<Event> = deserialize(&results)?;
 
         Ok(events)
-    }
-
-    pub fn put_fetch_failure(&self, failure: &FetchFailure) -> Result<(), Error> {
-        let payload = serialize(failure)?;
-        self.send_command(Command::PutFetchFailure, &payload)?;
-
-        Ok(())
-    }
-
-    pub fn get_fetch_failures(&self) -> Result<HashMap<WxApp, u16>, Error> {
-        let results = self.send_command(Command::GetFetchFailures, &[])?;
-        let failures: Vec<FetchFailure> = deserialize(&results)?;
-        let mut failure_map: HashMap<WxApp, u16> = HashMap::new();
-
-        failures.into_iter().for_each(|x| {
-            let counter = failure_map.entry(x.app).or_insert(0);
-            *counter += 1;
-        });
-
-        Ok(failure_map)
     }
 }
 

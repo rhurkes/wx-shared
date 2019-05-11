@@ -24,7 +24,7 @@ impl Event {
             event_ts,
             event_type,
             expires_ts: None,
-            image_uri: None,
+            ext_uri: None,
             ingest_ts: 0,
             location: None,
             md: None,
@@ -92,7 +92,7 @@ pub enum HazardType {
     MarineWind,
     Lightning,
     Waterspout,
-    Wildfire
+    Wildfire,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
@@ -141,9 +141,9 @@ pub struct Warning {
     pub is_tor_emergency: Option<bool>, // TOR only
     pub was_observed: Option<bool>,     // TOR only
     pub issued_for: String,
-    pub motion_deg: Option<u16>,    // TOR and SVR only
-    pub motion_kt: Option<u16>, // TOR and SVR only
-    pub source: Option<String>, // TOR and SVR only
+    pub motion_deg: Option<u16>, // TOR and SVR only
+    pub motion_kt: Option<u16>,  // TOR and SVR only
+    pub source: Option<String>,  // TOR and SVR only
     pub time: String,
 }
 
@@ -190,12 +190,4 @@ pub struct MesoscaleDiscussion {
     pub concerning: MdConcerning,
     pub watch_issuance_probability: Option<u16>,
     pub wfos: Vec<String>,
-}
-
-#[derive(Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
-pub enum WxApp {
-    SpotterNetworkLoader,
-    NwsApiLoader,
-    SpcSfcoaLoader,
-    Admin,
 }
